@@ -70,6 +70,7 @@ Task Table
 
 ## Project Structure
 The current project structure is:
+```text
 TaskManagementAPI/
 │
 ├── Data/
@@ -88,6 +89,7 @@ TaskManagementAPI/
 ├── appsettings.Development.json
 ├── TaskManagementAPI.csproj
 └── README.md
+```
 The project structure will be improved in later stages as controllers, DTOs and additional application components are introduced. 
 
 ## Database
