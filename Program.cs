@@ -63,5 +63,24 @@ app.MapGet("/api/tasks/{id}", async (int id, AppDbContext db) =>
 });
 
 
+// Update a single task
+app.MapPut("/api/tasks/{id}", async (int id, TaskItem updatedTask, AppDbContext db) =>
+{
+    var task = await db.Tasks.FindAsync(id);
+
+    if (task is null)
+    {
+        return Results.NotFound();
+    }
+
+    task.Title = updatedTask.Title;
+    task.Description = updatedTask.Description;
+    task.IsCompleted = updatedTask.IsCompleted;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(task);
+});
+
 
 app.Run();
