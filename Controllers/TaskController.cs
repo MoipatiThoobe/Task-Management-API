@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TaskManagementApi.DTOs;
 using TaskManagementAPI.Data;
+using TaskManagementAPI.DTOs;
 using TaskManagementAPI.Models;
 
 namespace TaskManagementAPI.Controllers;
@@ -43,25 +45,31 @@ public class TaskController : ControllerBase
 
     // Create a task
     [HttpPost]
-    public async Task<ActionResult<TaskItem>> CreateTask(TaskItem task)
+    public async Task<ActionResult<TaskItem>> CreateTask(CreateTaskDto taskDto)
     {
-        task.CreatedAt = DateTime.Now;
+       var task = new TaskItem
+       {
+           Title = taskDto.Title,
+           Description = taskDto.Description,
+           IsCompleted = taskDto.IsCompleted,
+           CreatedAt = DateTime.Now
+       };
 
-        _context.Tasks.Add(task);
+       _context.Tasks.Add(task);
 
-        await _context.SaveChangesAsync();
+       await _context.SaveChangesAsync();
 
-        return CreatedAtAction(
-            nameof(GetTask),
-            new { id = task.Id },
-            task);
+       return CreatedAtAction(
+        nameof(GetTask),
+        new { id = task.Id },
+        task);
     }
 
     // Update a task
     [HttpPut("{id}")]
     public async Task<ActionResult<TaskItem>> UpdateTask(
         int id,
-        TaskItem updatedTask)
+        UpdateTaskDto updatedTask)
     {
         var task = await _context.Tasks.FindAsync(id);
 
